@@ -6,7 +6,7 @@
 
 ## 📸 Screenshot
 
-![Dashboard Screenshot](./frontend/my-app/public/dashboard-screenshot.png)
+![Dashboard Screenshot](Screenshot (446).png)
 
 ---
 
