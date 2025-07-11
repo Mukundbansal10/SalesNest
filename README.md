@@ -94,14 +94,12 @@ SalesNest/
 ## 👨‍💻 Developed By
 
 **Mukund Bansal**
-Third Year B.Tech CSE Student | Passionate Full Stack Developer
+B.Tech CSE Student | Passionate Full Stack Developer
 📍 Mathura, India
-🔗 [LinkedIn](https://linkedin.com/in/mukundbansal10) | [GitHub](https://github.com/mukundbansal10)
+🔗 [LinkedIn](https://linkedin.com/in/mukundbansal10) | [GitHub](https://github.com/mukundbansal10) | [Portfolio](https://mukundbansal.netlify.app)
 
 ---
 
 ## ⭐ Show your Support
 
 If you like this project, don’t forget to ⭐ the repo!
-
----=
