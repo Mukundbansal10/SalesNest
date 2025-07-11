@@ -6,7 +6,7 @@
 
 ## 📸 Screenshot
 
-![Dashboard Screenshot](Screenshot (446).png)
+![Dashboard Screenshot](dashboard-screenshot.png)
 
 ---
 
