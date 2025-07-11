@@ -37,3 +37,71 @@
 ```bash
 git clone https://github.com/mukundbansal10/SalesNest.git
 cd SalesNest
+````
+
+### 2. Start Backend
+
+```bash
+cd backend
+npm install
+# Add your .env with MONGODB_URI and PORT
+npm start
+```
+
+### 3. Start Frontend
+
+```bash
+cd ../frontend/my-app
+npm install
+npm start
+```
+
+---
+
+## 🌐 Deployment
+
+* **Frontend**: [Netlify](https://www.netlify.com/)
+* **Backend**: [Render](https://render.com/)
+
+Update all `axios` API calls to point to your deployed backend like:
+
+```js
+axios.get('https://your-backend-url.onrender.com/api/products')
+```
+
+---
+
+## 📁 Folder Structure
+
+```
+SalesNest/
+├── backend/          → Express + MongoDB backend
+├── frontend/
+│   └── my-app/       → React frontend app (Tailwind + Chart)
+```
+
+---
+
+## 📦 Future Scope
+
+* 🔍 Product search & filter
+* 📊 Advanced analytics (daily, weekly, yearly)
+* 🧾 Invoice generator
+* 👨‍💼 Admin vs Staff roles
+
+---
+
+## 👨‍💻 Developed By
+
+**Mukund Bansal**
+Third Year B.Tech CSE Student | Passionate Full Stack Developer
+📍 Mathura, India
+🔗 [LinkedIn](https://linkedin.com/in/mukundbansal10) | [GitHub](https://github.com/mukundbansal10)
+
+---
+
+## ⭐ Show your Support
+
+If you like this project, don’t forget to ⭐ the repo!
+
+---=
