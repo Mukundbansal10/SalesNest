@@ -16,6 +16,8 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+
 // Get all sales
 router.get('/', async (req, res) => {
   try {

@@ -1,5 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FiLogOut, FiMenu, FiHome, FiBox, FiUsers, FiShoppingCart, FiMoon, FiSun } from 'react-icons/fi';
+import {
+  FiLogOut, FiMenu, FiHome, FiBox, FiUsers,
+  FiShoppingCart, FiMoon, FiSun
+} from 'react-icons/fi';
+import { FaFileInvoice } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 const menuItems = [
@@ -7,6 +11,7 @@ const menuItems = [
   { label: 'Products', path: '/products', icon: <FiBox /> },
   { label: 'Customers', path: '/customers', icon: <FiUsers /> },
   { label: 'Sales', path: '/sales', icon: <FiShoppingCart /> },
+  { label: 'Invoice', path: '/invoice', icon: <FaFileInvoice /> }, // ✅ NEW ITEM
 ];
 
 export default function Sidebar({ collapsed, setCollapsed, dark, setDark }) {

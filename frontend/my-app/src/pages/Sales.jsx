@@ -71,7 +71,7 @@ export default function Sales() {
   return (
     <div className="p-6 bg-white dark:bg-gray-900 min-h-screen text-black dark:text-white">
       <h2 className="text-3xl font-bold mb-6">💸 Sales Management</h2>
-      
+
       <div className="mb-4">
         <select
           className="w-full max-w-md border p-3 rounded bg-gray-100 dark:bg-gray-800 dark:text-white"
@@ -79,7 +79,9 @@ export default function Sales() {
           onChange={e => setSelectedCustomer(e.target.value)}
         >
           <option value="">Select Customer</option>
-          {customers.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
+          {customers.map(c => (
+            <option key={c._id} value={c._id}>{c.name}</option>
+          ))}
         </select>
       </div>
 
@@ -101,7 +103,9 @@ export default function Sales() {
       <div className="bg-gray-100 dark:bg-gray-800 rounded shadow p-4 mb-6">
         <h3 className="text-xl font-semibold mb-2">🛒 Cart</h3>
         {cart.map((i, idx) => (
-          <div key={idx} className="mb-1">{i.product.name} × {i.quantity} = ₹{i.quantity * i.product.price}</div>
+          <div key={idx} className="mb-1">
+            {i.product?.name || <span className="italic text-gray-400">Unknown Product</span>} × {i.quantity} = ₹{i.quantity * i.product.price}
+          </div>
         ))}
         <div className="mt-2 font-semibold">Total: ₹{total}</div>
         <button
@@ -113,14 +117,13 @@ export default function Sales() {
       </div>
 
       <a
-  href="http://localhost:5000/api/sales/export"
-  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-6"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <FaDownload /> Download CSV
-</a>
-
+        href="http://localhost:5000/api/sales/export"
+        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-6"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaDownload /> Download CSV
+      </a>
 
       <div className="bg-gray-100 dark:bg-gray-800 rounded shadow p-4">
         <h3 className="text-xl font-semibold mb-2">📋 Sales History</h3>
@@ -136,10 +139,12 @@ export default function Sales() {
             <tbody>
               {sales.map(s => (
                 <tr key={s._id} className="border-t border-gray-300 dark:border-gray-600">
-                  <td className="px-3 py-2">{s.customer?.name}</td>
+                  <td className="px-3 py-2">{s.customer?.name || <span className="italic text-gray-400">Unknown</span>}</td>
                   <td className="px-3 py-2">
-                    {s.items.map(i => (
-                      <div key={i.product._id}>{i.product.name} × {i.quantity}</div>
+                    {s.items?.map(i => (
+                      <div key={i.product?._id || i._id}>
+                        {i.product?.name || <span className="italic text-gray-400">Unknown Product</span>} × {i.quantity}
+                      </div>
                     ))}
                   </td>
                   <td className="px-3 py-2">₹{s.totalAmount}</td>
