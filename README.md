@@ -1,105 +1,142 @@
-# 🧾 SalesNest
+# 📊 SalesNest – Smart Sales Dashboard
 
-**SalesNest** is a full-stack Sales Management System built with **MERN stack** (MongoDB, Express, React, Node.js). It provides a user-friendly dashboard to manage Products, Customers, and Sales with monthly sales trends and real-time revenue tracking.
-
----
-
-## 📸 Screenshot
-
-![Dashboard Screenshot](dashboard-screenshot.png)
+SalesNest is a full-stack **Sales Management System** built with the MERN stack that allows users to manage products and orders efficiently, with intuitive analytics like pie charts and detailed statistics.
 
 ---
 
-## 🚀 Features
+## 🚀 Key Features
 
-- 📦 Add, Edit, Delete Products
-- 👥 Manage Customers
-- 🛒 Create Sales with Cart Interface
-- 📈 Monthly Sales Visualization (Recharts)
-- 💰 Revenue Tracking
-- 📂 Export Sales as CSV
-- 🔐 Protected Routes with Authentication
-- 🌙 Dark Mode Compatible
-
----
-
-## 🔧 Tech Stack
-
-| Frontend         | Backend              | Database     |
-|------------------|----------------------|--------------|
-| React, TailwindCSS | Node.js, Express.js | MongoDB      |
+- 📦 Manage products – add, edit, delete  
+- 🧾 Manage orders – create, view all  
+- 🔐 Admin login with JWT-based auth  
+- 📊 Visual insights via pie charts (product category-wise)  
+- 📈 Real-time stats: Total products, categories & orders  
+- 💻 Clean, responsive UI using Tailwind CSS  
+- 🔄 Fully API-integrated frontend (live data fetch)
 
 ---
 
-## 🛠️ Setup Instructions
+## 📸 Dashboard Preview
 
-### 1. Clone the repo
+> 🖼️ **Add your screenshot below:**  
+![SalesNest Screenshot](image.png)
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React.js, Tailwind CSS, Recharts  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB  
+- **Auth & Utilities:** JWT, bcryptjs, Axios, dotenv  
+
+---
+
+## 🔧 Setup Guide
+
+### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/mukundbansal10/SalesNest.git
-cd SalesNest
-````
+git clone https://github.com/your-username/salesnest.git
+cd salesnest
+```
 
-### 2. Start Backend
+### 2. Install Dependencies
+
+**Frontend**
+
+```bash
+cd frontend
+npm install
+```
+
+**Backend**
 
 ```bash
 cd backend
 npm install
-# Add your .env with MONGODB_URI and PORT
-npm start
 ```
 
-### 3. Start Frontend
+### 3. Configure Environment Variables
+
+Create a `.env` file inside the `/backend` directory:
+
+```
+PORT=5000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+```
+
+### 4. Start the Project
+
+**Backend**
 
 ```bash
-cd ../frontend/my-app
-npm install
+cd backend
+npm run server
+```
+
+**Frontend**
+
+```bash
+cd frontend
 npm start
 ```
 
 ---
 
-## 🌐 Deployment
+## 📡 API Endpoints
 
-* **Frontend**: [Netlify](https://www.netlify.com/)
-* **Backend**: [Render](https://render.com/)
+### 🔹 Product APIs
 
-Update all `axios` API calls to point to your deployed backend like:
+- `GET /api/products` — Fetch all products  
+- `POST /api/products` — Add a new product  
+- `DELETE /api/products/:id` — Delete product  
+- `GET /api/summary/product-distribution` — Pie chart data  
 
-```js
-axios.get('https://your-backend-url.onrender.com/api/products')
-```
+### 🔹 Order APIs
+
+- `GET /api/orders` — Fetch all orders  
+- `POST /api/orders` — Add a new order  
 
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```
-SalesNest/
-├── backend/          → Express + MongoDB backend
+salesnest/
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── server.js
 ├── frontend/
-│   └── my-app/       → React frontend app (Tailwind + Chart)
+│   ├── components/
+│   ├── pages/
+│   ├── App.jsx
+│   └── main.jsx
 ```
 
 ---
 
-## 📦 Future Scope
+## 👨‍💻 Team
 
-* 🔍 Product search & filter
-* 📊 Advanced analytics (daily, weekly, yearly)
-* 🧾 Invoice generator
-* 👨‍💼 Admin vs Staff roles
+- Mukund – Backend + Dashboard UI  
+- [Add team member(s) if needed]
 
 ---
 
-## 👨‍💻 Developed By
+## ✅ Future Enhancements
 
-**Mukund Bansal**
-B.Tech CSE Student | Passionate Full Stack Developer
-📍 Mathura, India
-🔗 [LinkedIn](https://linkedin.com/in/mukundbansal10) | [GitHub](https://github.com/mukundbansal10) | [Portfolio](https://mukundbansal.netlify.app)
+- 📈 Add bar/line charts for sales over time  
+- 🧑‍💼 Add user roles and multi-admin access  
+- 📤 Export sales reports as CSV  
+- 📱 Make mobile-first PWA version
 
 ---
 
-## ⭐ Show your Support
+## 📄 License
 
-If you like this project, don’t forget to ⭐ the repo!
+Licensed under the [MIT License](LICENSE).  
+Feel free to use, fork, and customize.
