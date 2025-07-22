@@ -2,7 +2,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Predict from './pages/Predict';
+// import Predict from './pages/Predict';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import Customers from './pages/Customers';
@@ -33,7 +33,7 @@ function App() {
 
         {/* Protected Routes */}
         <Route path="/" element={renderWithLayout(Dashboard)} />
-        <Route path="/predict" element={renderWithLayout(Predict)} />
+        {/* <Route path="/predict" element={renderWithLayout(Predict)} /> */}
         <Route path="/products" element={renderWithLayout(Products)} />
         <Route path="/customers" element={renderWithLayout(Customers)} />
         <Route path="/sales" element={renderWithLayout(Sales)} />

@@ -188,12 +188,13 @@ export default function InvoicePage() {
             className="p-2 rounded border bg-gray-200 dark:bg-gray-600 dark:text-white col-span-2"
           />
           <input
-            type="text"
-            placeholder="GSTIN (optional)"
-            // value={form.gstin}
-            
-            className="p-2 rounded border bg-gray-200 dark:bg-gray-600 dark:text-white col-span-2"
-          />
+  type="text"
+  placeholder="GSTIN (optional)"
+  value={form.gstin}
+  onChange={(e) => setForm({ ...form, gstin: e.target.value })}
+  className="p-2 rounded border bg-gray-200 dark:bg-gray-600 dark:text-white col-span-2"
+/>
+
         </div>
 
         {/* Product items */}

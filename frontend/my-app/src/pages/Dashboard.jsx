@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Bar, Pie, Line } from 'react-chartjs-2';
-// import SalesPrediction from "../components/SalesPrediction";
-// import SalesPrediction from '../components/SalesPrediction'; // ✅ correct import
 
 
 import {
@@ -47,9 +45,13 @@ export default function Dashboard() {
   useEffect(() => {
     axios.get('/api/dashboard/summary').then((res) => setSummary(res.data || {}));
     axios.get('/api/sales').then((res) => setSales(res.data || []));
+    axios.get('/api/dashboard/product-distribution')
+    .then((res) => setProductDistribution(res.data))
+    .catch((err) => console.error("Distribution fetch failed", err));
     axios.get('/api/products').then((res) => setProducts(res.data || []));
   }, []);
 
+const [productDistribution, setProductDistribution] = useState([]);
   const monthlySales = Array(12).fill(0);
   const monthlyRevenue = Array(12).fill(0);
 
@@ -83,21 +85,23 @@ export default function Dashboard() {
   };
 
   const pieData = {
-    labels: products.map((p) => p.name),
+    labels: productDistribution.map((p) => p.name),
     datasets: [{
-      data: products.map((p) => p.quantity || 1),
-      backgroundColor: [
-        '#3b82f6', '#facc15', '#a855f7', '#f87171',
-        '#14b8a6', '#6366f1', '#fb923c'
-      ]
+      data: productDistribution.map((p) => p.soldQty),
+      backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA'],
+      hoverOffset: 4,
     }]
   };
+  
 
   const avgSalePerCustomer = summary.totalCustomers
     ? Math.round(summary.totalRevenue / summary.totalCustomers)
     : 0;
 
-  const topProduct = products.reduce((a, b) => (a.quantity > b.quantity ? a : b), {})?.name;
+    const topProduct = summary.topProduct || 'N/A';
+
+    
+
 
   const cards = [
     { label: 'Products', value: summary.totalProducts, icon: <FaBox />, bg: 'bg-blue-200' },
