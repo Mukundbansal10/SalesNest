@@ -18,7 +18,6 @@ SalesNest is a full-stack **Sales Management System** built with the MERN stack 
 
 ## 📸 Dashboard Preview
 
-> 🖼️ **Add your screenshot below:**  
 ![SalesNest Screenshot](image.png)
 
 ---
