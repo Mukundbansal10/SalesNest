@@ -122,7 +122,6 @@ salesnest/
 ## 👨‍💻 Team
 
 - Mukund – Backend + Dashboard UI  
-- [Add team member(s) if needed]
 
 ---
 
