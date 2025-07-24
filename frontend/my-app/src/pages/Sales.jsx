@@ -38,35 +38,61 @@ export default function Sales() {
   }, [cart]);
 
   const addToCart = (product) => {
-    setCart(prev => {
-      const exists = prev.find(item => item.product._id === product._id);
-      if (exists) {
-        return prev.map(item =>
+    const existingItem = cart.find((item) => item.product._id === product._id);
+    const currentCartQty = existingItem ? existingItem.quantity : 0;
+  
+    if (currentCartQty >= product.stock) {
+      alert(`Only ${product.stock} items in stock!`);
+      return;
+    }
+  
+    if (existingItem) {
+      setCart(
+        cart.map((item) =>
           item.product._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
-        );
+        )
+      );
+    } else {
+      if (product.stock < 1) {
+        alert("This product is out of stock!");
+        return;
       }
-      return [...prev, { product, quantity: 1 }];
-    });
+  
+      setCart([...cart, { product, quantity: 1 }]);
+    }
   };
+  
+  
+  
 
   const submitSale = async () => {
     if (!selectedCustomer) return toast.warning("Select a customer");
     if (!cart.length) return toast.warning("Add items to cart");
-
+  
     const payload = {
       customer: selectedCustomer,
       items: cart.map(c => ({ product: c.product._id, quantity: c.quantity })),
       totalAmount: total
     };
-
-    await axios.post('/api/sales', payload);
-    toast.success("Sale recorded");
-    setCart([]);
-    setSelectedCustomer('');
-    fetchSales();
+  
+    try {
+      await axios.post('/api/sales', payload);
+      toast.success("Sale recorded");
+      setCart([]);
+      setSelectedCustomer('');
+      fetchSales();
+      fetchProducts(); 
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message || "Invalid request: Check stock quantity.");
+      } else {
+        toast.error("Something went wrong while submitting the sale.");
+      }
+    }
   };
+  
 
   return (
     <div className="p-6 bg-white dark:bg-gray-900 min-h-screen text-black dark:text-white">
@@ -91,11 +117,17 @@ export default function Sales() {
             <div className="font-semibold text-gray-800 dark:text-gray-200">{p.name}</div>
             <div className="mt-1">₹{p.price}</div>
             <button
-              onClick={() => addToCart(p)}
-              className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded inline-flex items-center"
-            >
-              <FaCartPlus /> <span className="ml-1">Add</span>
-            </button>
+  onClick={() => addToCart(p)}
+  disabled={p.stock === 0 || cart.find(c => c.product._id === p._id)?.quantity >= p.stock}
+  className={`mt-2 px-3 py-1 rounded inline-flex items-center ${
+    p.stock === 0 || (cart.find(c => c.product._id === p._id)?.quantity >= p.stock)
+      ? "bg-gray-400 cursor-not-allowed text-white"
+      : "bg-blue-600 hover:bg-blue-700 text-white"
+  }`}
+>
+<FaCartPlus /> <span className="ml-1">Add</span>
+</button>
+
           </div>
         ))}
       </div>
@@ -104,7 +136,10 @@ export default function Sales() {
         <h3 className="text-xl font-semibold mb-2">🛒 Cart</h3>
         {cart.map((i, idx) => (
           <div key={idx} className="mb-1">
-            {i.product?.name || <span className="italic text-gray-400">Unknown Product</span>} × {i.quantity} = ₹{i.quantity * i.product.price}
+            {i.product?.name || <span className="italic text-gray-400">Deleted Product</span>} × {i.quantity} = ₹{i.quantity * i.product.price}
+            + <div className="text-sm text-gray-500">Stock: {i.product.stock}</div>
+
+
           </div>
         ))}
         <div className="mt-2 font-semibold">Total: ₹{total}</div>

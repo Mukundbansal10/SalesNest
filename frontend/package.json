@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "html2pdf.js": "^0.10.3"
+    "html2pdf.js": "^0.10.3",
+    "sweetalert2": "^11.22.2"
   }
 }

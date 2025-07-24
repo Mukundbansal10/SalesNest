@@ -57,6 +57,9 @@ function Products() {
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow">
         <input type="text" placeholder="Name" value={form.name} className="border p-2 rounded bg-white dark:bg-gray-700 dark:text-white" onChange={(e) => setForm({ ...form, name: e.target.value })} />
+
+
+        
         <input type="number" placeholder="Price" value={form.price} className="border p-2 rounded bg-white dark:bg-gray-700 dark:text-white" onChange={(e) => setForm({ ...form, price: e.target.value })} />
         <input type="number" placeholder="Quantity" value={form.quantity} className="border p-2 rounded bg-white dark:bg-gray-700 dark:text-white" onChange={(e) => setForm({ ...form, quantity: e.target.value })} />
         <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded col-span-1 sm:col-span-3">
