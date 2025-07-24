@@ -7,7 +7,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', form);
+      await axios.post('https://salesnest-backend.onrender.com/api/auth/register', form);
       alert('✅ Registered successfully. Now login!');
       window.location.href = '/login';
     } catch (err) {
