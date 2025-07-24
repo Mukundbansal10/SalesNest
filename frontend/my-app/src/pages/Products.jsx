@@ -8,7 +8,7 @@ function Products() {
   const [editId, setEditId] = useState(null);
 
   const fetchProducts = async () => {
-    const res = await axios.get('http://localhost:5000/api/products');
+    const res = await axios.get('https://salesnest-backend.onrender.com/api/products');
     setProducts(res.data);
   };
 
@@ -25,10 +25,10 @@ function Products() {
 
     try {
       if (editId) {
-        await axios.put(`http://localhost:5000/api/products/${editId}`, form);
+        await axios.put(`https://salesnest-backend.onrender.com/api/products/${editId}`, form);
         toast.success("Product updated");
       } else {
-        await axios.post('http://localhost:5000/api/products', form);
+        await axios.post('https://salesnest-backend.onrender.com/api/products', form);
         toast.success("Product added");
       }
     } catch {
@@ -41,7 +41,7 @@ function Products() {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/products/${id}`);
+    await axios.delete(`https://salesnest-backend.onrender.com/api/products/${id}`);
     toast.success("Product deleted");
     fetchProducts();
   };
