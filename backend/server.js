@@ -3,7 +3,15 @@ require('dotenv').config(); // ✅ Yeh line sabse pehle honi chahiye
 
 const express = require('express');
 const mongoose = require('mongoose');
+// const cors = require('cors');
 const cors = require('cors');
+
+app.use(cors({
+  origin: ['https://your-frontend.vercel.app'], // Vercel ka domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
