@@ -75,7 +75,7 @@ router.get('/product-distribution', async (req, res) => {
           as: "product"
         }
       },
-      { $unwind: "$product" },
+      { $unwind: { path: "$product", preserveNullAndEmptyArrays: true } },
       {
         $project: {
           name: "$product.name",
@@ -84,12 +84,13 @@ router.get('/product-distribution', async (req, res) => {
       }
     ]);
 
-    res.json(soldAgg);
+    res.json(Array.isArray(soldAgg) ? soldAgg : []); // ✅ Always return array
   } catch (error) {
     console.error("Product distribution error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error", data: [] });
   }
 });
+
 
 
 module.exports = router;
