@@ -85,13 +85,18 @@ const [productDistribution, setProductDistribution] = useState([]);
   };
 
   const pieData = {
-    labels: productDistribution.map((p) => p.name),
-    datasets: [{
-      data: productDistribution.map((p) => p.soldQty),
-      backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA'],
-      hoverOffset: 4,
-    }]
-  };
+  labels: Array.isArray(productDistribution) 
+    ? productDistribution.map((p) => p?.name || "Unknown")
+    : [],
+  datasets: [{
+    data: Array.isArray(productDistribution) 
+      ? productDistribution.map((p) => p?.soldQty || 0)
+      : [],
+    backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA'],
+    hoverOffset: 4,
+  }]
+};
+
   
 
   const avgSalePerCustomer = summary.totalCustomers
