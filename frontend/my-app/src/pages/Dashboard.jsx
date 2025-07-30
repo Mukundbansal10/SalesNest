@@ -59,11 +59,16 @@ export default function Dashboard() {
   const monthlySales = Array(12).fill(0);
   const monthlyRevenue = Array(12).fill(0);
 
-  (Array.isArray(sales) ? sales : []).forEach((sale) => {
-    const m = new Date(sale?.createdAt || Date.now()).getMonth();
+  if (Array.isArray(sales)) {
+  sales.forEach((sale) => {
+    const m = new Date(sale.createdAt).getMonth();
     monthlySales[m]++;
-    monthlyRevenue[m] += sale?.totalAmount || 0;
+    monthlyRevenue[m] += sale.totalAmount || 0;
   });
+} else {
+  console.error("Sales data is not an array:", sales);
+}
+
 
   const barData = {
     labels: [
@@ -88,18 +93,19 @@ export default function Dashboard() {
     }]
   };
 
-  const pieData = {
-    labels: Array.isArray(productDistribution)
-      ? productDistribution.map((p) => p?.name || "Unknown")
+const pieData = {
+  labels: Array.isArray(productDistribution) 
+    ? productDistribution.map((p) => p?.name || "Unknown")
+    : [],
+  datasets: [{
+    data: Array.isArray(productDistribution) 
+      ? productDistribution.map((p) => p?.soldQty || 0)
       : [],
-    datasets: [{
-      data: Array.isArray(productDistribution)
-        ? productDistribution.map((p) => p?.soldQty || 0)
-        : [],
-      backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA'],
-      hoverOffset: 4,
-    }]
-  };
+    backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA'],
+    hoverOffset: 4,
+  }]
+};
+
 
   const avgSalePerCustomer = summary?.totalCustomers
     ? Math.round((summary?.totalRevenue || 0) / summary.totalCustomers)
