@@ -17,7 +17,7 @@ export default function InvoicePage() {
   const [products, setProducts] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
-  const [loading, setLoading] = useState(true); // 🔄 Loader state
+  const [loading, setLoading] = useState(true);
 
   // Fetch products & customers together
   useEffect(() => {
@@ -27,19 +27,20 @@ export default function InvoicePage() {
           axios.get('/api/products'),
           axios.get('/api/customers'),
         ]);
-        setProducts(prodRes.data || []);
-        setCustomers(custRes.data || []);
+
+        // ✅ Ensure valid arrays
+        setProducts(Array.isArray(prodRes.data) ? prodRes.data : []);
+        setCustomers(Array.isArray(custRes.data) ? custRes.data : []);
       } catch (err) {
-        console.error('Error fetching data', err);
+        console.error('Error fetching data:', err);
         toast.error('❌ Failed to load products/customers');
       } finally {
-        setLoading(false); // ✅ Loader complete
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
-  // Customer selection
   const handleCustomerSelect = (e) => {
     const id = e.target.value;
     setSelectedCustomerId(id);
@@ -133,7 +134,7 @@ export default function InvoicePage() {
   const gst = +(totalAmount * 0.18).toFixed(2);
   const grandTotal = +(totalAmount + gst).toFixed(2);
 
-  if (loading) return <div className="text-center p-6 text-lg">⏳ Loading...</div>; // Loader screen
+  if (loading) return <div className="text-center p-6 text-lg">⏳ Loading...</div>;
 
   return (
     <div className="p-6 bg-white dark:bg-gray-900 text-black dark:text-white min-h-screen">
@@ -153,7 +154,7 @@ export default function InvoicePage() {
           className="w-full p-2 mb-4 rounded border bg-white dark:bg-gray-700 dark:text-white"
         >
           <option value="">-- Choose a customer --</option>
-          {customers?.length > 0 ? (
+          {Array.isArray(customers) && customers.length > 0 ? (
             customers.map(customer => (
               <option key={customer._id} value={customer._id}>
                 {customer.name} ({customer.email})
@@ -206,7 +207,7 @@ export default function InvoicePage() {
                 className="p-2 rounded border bg-white dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select Product</option>
-                {products?.length > 0 ? (
+                {Array.isArray(products) && products.length > 0 ? (
                   products.map((product, idx) => (
                     <option key={idx} value={product.name}>{product.name}</option>
                   ))
