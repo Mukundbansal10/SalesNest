@@ -17,36 +17,29 @@ export default function InvoicePage() {
   const [products, setProducts] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
+  const [loading, setLoading] = useState(true); // 🔄 Loader state
 
-  // Fetch products
+  // Fetch products & customers together
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get('/api/products');
-        setProducts(res.data);
+        const [prodRes, custRes] = await Promise.all([
+          axios.get('/api/products'),
+          axios.get('/api/customers'),
+        ]);
+        setProducts(prodRes.data || []);
+        setCustomers(custRes.data || []);
       } catch (err) {
-        console.error("Error fetching products", err);
-        toast.error("❌ Failed to load product list");
+        console.error('Error fetching data', err);
+        toast.error('❌ Failed to load products/customers');
+      } finally {
+        setLoading(false); // ✅ Loader complete
       }
     };
-    fetchProducts();
+    fetchData();
   }, []);
 
-  // ✅ Fetch customers
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const res = await axios.get('/api/customers');
-        setCustomers(res.data);
-      } catch (err) {
-        console.error("Error fetching customers", err);
-        toast.error("❌ Failed to load customers");
-      }
-    };
-    fetchCustomers();
-  }, []);
-
-  // 🔄 When customer selected → auto-fill data
+  // Customer selection
   const handleCustomerSelect = (e) => {
     const id = e.target.value;
     setSelectedCustomerId(id);
@@ -140,6 +133,8 @@ export default function InvoicePage() {
   const gst = +(totalAmount * 0.18).toFixed(2);
   const grandTotal = +(totalAmount + gst).toFixed(2);
 
+  if (loading) return <div className="text-center p-6 text-lg">⏳ Loading...</div>; // Loader screen
+
   return (
     <div className="p-6 bg-white dark:bg-gray-900 text-black dark:text-white min-h-screen">
       <h2 className="text-3xl font-bold mb-6">🧾 Generate Invoice</h2>
@@ -158,11 +153,15 @@ export default function InvoicePage() {
           className="w-full p-2 mb-4 rounded border bg-white dark:bg-gray-700 dark:text-white"
         >
           <option value="">-- Choose a customer --</option>
-          {customers.map(customer => (
-            <option key={customer._id} value={customer._id}>
-              {customer.name} ({customer.email})
-            </option>
-          ))}
+          {customers?.length > 0 ? (
+            customers.map(customer => (
+              <option key={customer._id} value={customer._id}>
+                {customer.name} ({customer.email})
+              </option>
+            ))
+          ) : (
+            <option disabled>No customers found</option>
+          )}
         </select>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -188,13 +187,12 @@ export default function InvoicePage() {
             className="p-2 rounded border bg-gray-200 dark:bg-gray-600 dark:text-white col-span-2"
           />
           <input
-  type="text"
-  placeholder="GSTIN (optional)"
-  value={form.gstin}
-  onChange={(e) => setForm({ ...form, gstin: e.target.value })}
-  className="p-2 rounded border bg-gray-200 dark:bg-gray-600 dark:text-white col-span-2"
-/>
-
+            type="text"
+            placeholder="GSTIN (optional)"
+            value={form.gstin}
+            onChange={(e) => setForm({ ...form, gstin: e.target.value })}
+            className="p-2 rounded border bg-gray-200 dark:bg-gray-600 dark:text-white col-span-2"
+          />
         </div>
 
         {/* Product items */}
@@ -208,9 +206,13 @@ export default function InvoicePage() {
                 className="p-2 rounded border bg-white dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select Product</option>
-                {products.map((product, idx) => (
-                  <option key={idx} value={product.name}>{product.name}</option>
-                ))}
+                {products?.length > 0 ? (
+                  products.map((product, idx) => (
+                    <option key={idx} value={product.name}>{product.name}</option>
+                  ))
+                ) : (
+                  <option disabled>No products</option>
+                )}
               </select>
               <input
                 type="number"
