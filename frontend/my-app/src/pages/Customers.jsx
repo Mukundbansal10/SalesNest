@@ -10,8 +10,21 @@ export default function Customers() {
   const [editId, setEditId] = useState(null);
 
   const fetchCustomers = async () => {
-    const res = await axios.get('/api/customers');
-    setCustomers(res.data || []);
+    try {
+      const res = await axios.get('/api/customers');
+      const data = res.data;
+      if (Array.isArray(data)) {
+        setCustomers(data);
+      } else if (Array.isArray(data.customers)) {
+        setCustomers(data.customers);
+      } else {
+        console.warn("Unexpected customers API response:", data);
+        setCustomers([]);
+      }
+    } catch (err) {
+      console.error("Error fetching customers:", err);
+      setCustomers([]);
+    }
   };
 
   useEffect(() => {
@@ -42,9 +55,13 @@ export default function Customers() {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`/api/customers/${id}`);
-    toast.success("Customer deleted");
-    fetchCustomers();
+    try {
+      await axios.delete(`/api/customers/${id}`);
+      toast.success("Customer deleted");
+      fetchCustomers();
+    } catch {
+      toast.error("Delete failed");
+    }
   };
 
   const handleEdit = (cust) => {
@@ -99,28 +116,24 @@ export default function Customers() {
             </tr>
           </thead>
           <tbody>
-            {customers.map(c => (
-              <tr key={c._id} className="border-t border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="px-4 py-2">{c.name}</td>
-                <td className="px-4 py-2">{c.phone}</td>
-                <td className="px-4 py-2">{c.email}</td>
-                <td className="px-4 py-2">{c.address}</td>
-                <td className="px-4 py-2 flex gap-2">
-                  <button
-                    onClick={() => handleEdit(c)}
-                    className="bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded text-sm"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(c._id)}
-                    className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white text-sm"
-                  >
-                    Delete
-                  </button>
-                </td>
+            {Array.isArray(customers) && customers.length > 0 ? (
+              customers.map(c => (
+                <tr key={c._id} className="border-t border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-4 py-2">{c.name}</td>
+                  <td className="px-4 py-2">{c.phone}</td>
+                  <td className="px-4 py-2">{c.email}</td>
+                  <td className="px-4 py-2">{c.address}</td>
+                  <td className="px-4 py-2 flex gap-2">
+                    <button onClick={() => handleEdit(c)} className="bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded text-sm">Edit</button>
+                    <button onClick={() => handleDelete(c._id)} className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white text-sm">Delete</button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center py-4">No customers found</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </motion.div>
