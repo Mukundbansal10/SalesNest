@@ -45,30 +45,34 @@ export default function Dashboard() {
 
     axios.get('/api/sales')
       .then((res) => setSales(Array.isArray(res?.data) ? res.data : []))
-      .catch((err) => console.error("Sales fetch failed", err));
+      .catch((err) => {
+        console.error("Sales fetch failed", err);
+        setSales([]);
+      });
 
     axios.get('/api/dashboard/product-distribution')
       .then((res) => setProductDistribution(Array.isArray(res?.data) ? res.data : []))
-      .catch((err) => console.error("Distribution fetch failed", err));
+      .catch((err) => {
+        console.error("Distribution fetch failed", err);
+        setProductDistribution([]);
+      });
 
     axios.get('/api/products')
       .then((res) => setProducts(Array.isArray(res?.data) ? res.data : []))
-      .catch((err) => console.error("Products fetch failed", err));
+      .catch((err) => {
+        console.error("Products fetch failed", err);
+        setProducts([]);
+      });
   }, []);
 
   const monthlySales = Array(12).fill(0);
   const monthlyRevenue = Array(12).fill(0);
 
-  if (Array.isArray(sales)) {
-  sales.forEach((sale) => {
-    const m = new Date(sale.createdAt).getMonth();
+  (Array.isArray(sales) ? sales : []).forEach((sale) => {
+    const m = sale?.createdAt ? new Date(sale.createdAt).getMonth() : 0;
     monthlySales[m]++;
-    monthlyRevenue[m] += sale.totalAmount || 0;
+    monthlyRevenue[m] += sale?.totalAmount || 0;
   });
-} else {
-  console.error("Sales data is not an array:", sales);
-}
-
 
   const barData = {
     labels: [
@@ -93,19 +97,18 @@ export default function Dashboard() {
     }]
   };
 
-const pieData = {
-  labels: Array.isArray(productDistribution) 
-    ? productDistribution.map((p) => p?.name || "Unknown")
-    : [],
-  datasets: [{
-    data: Array.isArray(productDistribution) 
-      ? productDistribution.map((p) => p?.soldQty || 0)
+  const pieData = {
+    labels: Array.isArray(productDistribution) 
+      ? productDistribution.map((p) => p?.name || "Unknown")
       : [],
-    backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA'],
-    hoverOffset: 4,
-  }]
-};
-
+    datasets: [{
+      data: Array.isArray(productDistribution) 
+        ? productDistribution.map((p) => p?.soldQty || 0)
+        : [],
+      backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA'],
+      hoverOffset: 4,
+    }]
+  };
 
   const avgSalePerCustomer = summary?.totalCustomers
     ? Math.round((summary?.totalRevenue || 0) / summary.totalCustomers)
@@ -114,12 +117,12 @@ const pieData = {
   const topProduct = summary?.topProduct || 'N/A';
 
   const cards = [
-    { label: 'Products', value: summary?.totalProducts || 0, icon: <FaBox />, bg: 'bg-blue-200' },
-    { label: 'Customers', value: summary?.totalCustomers || 0, icon: <FaUsers />, bg: 'bg-green-200' },
-    { label: 'Sales', value: summary?.totalSales || 0, icon: <FaShoppingCart />, bg: 'bg-yellow-200' },
-    { label: 'Revenue', value: `₹${summary?.totalRevenue || 0}`, icon: <FaMoneyBillWave />, bg: 'bg-purple-200' },
+    { label: 'Products', value: summary?.totalProducts ?? 0, icon: <FaBox />, bg: 'bg-blue-200' },
+    { label: 'Customers', value: summary?.totalCustomers ?? 0, icon: <FaUsers />, bg: 'bg-green-200' },
+    { label: 'Sales', value: summary?.totalSales ?? 0, icon: <FaShoppingCart />, bg: 'bg-yellow-200' },
+    { label: 'Revenue', value: `₹${summary?.totalRevenue ?? 0}`, icon: <FaMoneyBillWave />, bg: 'bg-purple-200' },
     { label: 'Avg Sale / Customer', value: `₹${avgSalePerCustomer}`, icon: <FaMoneyBillWave />, bg: 'bg-indigo-200' },
-    { label: 'Total Items Sold', value: summary?.totalItems || 0, icon: <FaBox />, bg: 'bg-pink-200' },
+    { label: 'Total Items Sold', value: summary?.totalItems ?? 0, icon: <FaBox />, bg: 'bg-pink-200' },
     { label: 'Top Product', value: topProduct, icon: <FaStar />, bg: 'bg-cyan-200' }
   ];
 
@@ -180,5 +183,4 @@ const pieData = {
       </div>
     </div>
   );
-  
 }
