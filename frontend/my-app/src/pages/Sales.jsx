@@ -152,7 +152,7 @@ export default function Sales() {
       </div>
 
       <a
-        href="http://localhost:5000/api/sales/export"
+        href="https://salesnest-backend.onrender.com/api/sales/export"
         className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-6"
         target="_blank"
         rel="noopener noreferrer"
